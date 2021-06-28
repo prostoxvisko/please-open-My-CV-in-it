@@ -1,57 +1,187 @@
-﻿<button onclick="addQuestion()">Добавить вопрос</button>
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Title</title>
+ <style type="text/css">
+  .containerDivClass{
+   border: 1px solid black;
+   margin: 10px;
+   padding: 10px;
+  }
+  #testArea, #configArea{
+   border: 1px dashed green;
+   padding: 10px;
+  }
+ </style>
+</head>
+<body>
 
-<button>Начать тест</button><br>
+ <button onclick="btnStart()">Начать тест</button>
+ <button onclick="btnAdd()">Добави вопрос</button>
 
-<br>1. Что из перечисленного не является языком програмированния?<br>
-<input type="checkbox">
-<label>HTML</label><br>
-<input type="checkbox">
-<label>Java</label><br>
-<input type="checkbox">
-<label>Python</label><br>
-<input type="checkbox">
-<label>DevOps</label><br>
+ <form id="testArea" action="#" onsubmit="btnSubmit();return false">
+  Test
+ </form>
 
-<br>2. Какие из перечисленных видов тестирования могут быть автоматизированы?<br>
-<input type="checkbox">
-<label>UI тестирвоаание</label><br>
-<input type="checkbox">
-<label>Юзабилити тестирование</label><br>
-<input type="checkbox">
-<label>Тестирование совместимости</label><br>
-<input type="checkbox">
-<label>Unit тестирование</label><br>
+ <div id="configArea">
+  Config
+ </div>
 
-<br>3. Выберите вариант, который соответствует следующему предложению:"Известно, что<br>грымзик обязательно или полосат, или рогат, или и то и другое вместе"<br>
-<input type="checkbox">
-<label>Грымзик не может быть безрогим</label><br>
-<input type="checkbox">
-<label>Грымзик не может быть однотонным и безрогим одновременно</label><br>
-<input type="checkbox">
-<label>Грымзик не может быть полосатым и безрогим одновременно</label><br>
-<input type="checkbox">
-<label>Грымзик не может быть однотонным и рогатым одноввременно</label><br>
+ <script type="text/javascript">
 
-<br>4. Выберите типы алгоритмов, которых не существует<br>
-<input type="checkbox">
-<label>Алгоритм с ветвлением</label><br>
-<input type="checkbox">
-<label>Циклический безусловный</label><br>
-<input type="checkbox">
-<label>Циклический с параметром</label><br>
-<input type="checkbox">
-<label>Алгоритм с углублением</label><br>
+  var questions = [
+  {
+   "question": 'Что из перечисленного не является языком програмированния?',
+   "options": [
+   "HTML", "Java", "Python", "DevOps",
+   ],
+   "expetedOption": [ 'DevOps' ],
+   "givenAnswers": []
+  },
+  {
+   "question": 'Какие из перечисленных видов тестирования могут быть автоматизированы?',
+   "options": [
+   "UI тестирвоаание", "Юзабилити тестирование", "Тестирование совместимости", "Unit тестирование",
+   ],
+   "expetedOption": [ 'UI тестирвоаание', 'Тестирование совместимости' ],
+   "givenAnswers": []
+  },
+  {
+   "question": 'Какое из нижеперечисленных высказываний не является логическим?',
+   "options": [
+   "Луна это спутник Земли", "Все столы сделаны из дерева", "Апельсиновый сок самый вкусный", "Зимой обычно холоднее, чем летом",
+   ],
+   "expetedOption": [ 'Апельсиновый сок самый вкусный' ],
+   "givenAnswers": []
+  },
+  {
+   "question": 'Выберите типы алгоритмов, которых не существует',
+   "options": [
+   "Алгоритм с ветвлением", "Циклический безусловный", "Циклический с параметром", "Алгоритм с углублением",
+   ],
+   "expetedOption": [ 'Алгоритм с углублением' ],
+   "givenAnswers": []
+  },
+  {
+   "question": 'Какая (какие) из этих конструкций используется ( используются) для ветвления?',
+   "options": [
+   "switch case", "if else", "do while", "for",
+   ],
+   "expetedOption": [ 'switch case', 'if else' ],
+   "givenAnswers": []
+  },
 
-<br>5. Какая (какие) из этих конструкций используется ( используются) для ветвления?<br>
-<input type="checkbox">
-<label>switch case</label><br>
-<input type="checkbox">
-<label>if else</label><br>
-<input type="checkbox">
-<label>do while</label><br>
-<input type="checkbox">
-<label>for</label><br>
-<br>
-<button>Отправить</button>
 
-<br>
+  ];
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+   drawQuestions();
+  });
+
+  document.getElementById('configArea').style.display = "none"; //скрываем все то, что дожно быть скрыто от пользователя
+  document.getElementById('testArea').style.display = "none";
+
+  function drawQuestions(){
+   document.getElementById('testArea').innerHTML = '';
+   var questionCount = 1;
+   questions.forEach(item => {
+    var containerDiv = document.createElement("div");
+    containerDiv.className = 'containerDivClass';
+    var label = document.createElement("label");
+    label.innerHTML = questionCount + '. ' + item.question;
+    containerDiv.append(label);
+
+    item.options.forEach(option => {
+     var optionDiv = document.createElement("div");
+     var optionLabel = document.createElement("label");
+     optionLabel.innerHTML = option;
+     var optionInput = document.createElement("input");
+     optionInput.type = 'checkbox';
+     optionInput.value = option;
+     optionInput.name = questionCount;
+     optionDiv.append(optionInput);
+     optionDiv.append(optionLabel);
+     containerDiv.append(optionDiv);
+    });
+
+    document.getElementById('testArea').append(containerDiv);
+    questionCount++;
+   });
+   var submitInput = document.createElement("input");
+   submitInput.type = 'submit';
+   submitInput.value = 'отправить';
+   document.getElementById('testArea').append(submitInput);
+   
+  }
+
+  function btnSubmit() {
+   const formData = new FormData(document.getElementById('testArea'))
+   var errors = '';
+   var score = 0;
+   for(var question of questions ){
+    question.givenAnswers = [];
+   }
+   for (var pair of formData.entries()) {
+    questions[ pair[0] - 1 ].givenAnswers.push(pair[1]);
+   }
+   for (var question of questions) {
+    if( question.givenAnswers.length === 0 ){
+     alert('Все вопросы должны иметь хотя бы один выбранный вариант ответа. Проверьте правильность заполнения.');
+     return;
+    }
+   }
+   for (var question of questions) {
+    if( JSON.stringify(question.expetedOption) != JSON.stringify(question.givenAnswers) ){
+     errors += question.question + '\n'; //перебор на правильные овветы
+    }else{
+     score++;
+    }
+   }
+   if(errors != ''){
+    alert('Вы неправильно ответили на вопросы: \n' + errors + '\n' + 'Ваш результат: ' + score + ' из ' + questions.length);
+   }else{
+    alert('Ваш результат ' + score + ' из ' + questions.length + '.Вы молодец!');
+   }
+  }
+function btnStart() {
+   drawQuestions();
+   document.getElementById('configArea').style.display = "none";
+   document.getElementById('testArea').style.display = "block";
+  }
+
+  function btnAdd() {
+   document.getElementById('testArea').style.display = "none";
+   document.getElementById('configArea').style.display = "none";
+
+   newItem = {};
+
+   newItem.question = prompt('Введите текст вопроса');
+   if (newItem.question == null) alert('Вы не ввели текст  вопроса. Попробуйте добавить вопрос заново.');
+   return;
+   newItem.options = [];
+   for(var i=1; i<=4; i++ ){
+    var option = prompt('Введите текст ' + i + ' варианта ответа');
+    if (option == null){
+     alert('Вы не ввели текст ' +i+' варианта ответа. Попробуйте добавить вопрос заново.');
+     return;
+    }
+    newItem.options.push(option); 
+   }
+
+   newItem.expetedOption = [];
+   var enteredOptions = prompt('Введите номера правильных отвветов через запятую, номерация начинается с 1');
+   for( var enteredOption of enteredOptions.split(',') ){
+    if( newItem.options[enteredOption - 1] === undefined ){
+     alert('Поле может содержать только уникальные цифры 1, 2, 3, 4, разделенные запятой. Попробуйте добавить вопросзаново.');
+     return;
+    }
+    newItem.expetedOption.push( newItem.options[enteredOption - 1] );
+   }
+
+   questions.push(newItem);
+  }
+
+ </script>
+
+</body>
+</html>
